@@ -1,0 +1,40 @@
+# Standards: 1.2
+---
+# @meta author:value: [Thomas Boerger](https://github.com/tboerger)
+# @meta description: >
+# [![Source Code](https://img.shields.io/badge/github-source%20code-blue?logo=github&logoColor=white)](https://github.com/rolehippie/github-runner)
+# [![General Workflow](https://github.com/rolehippie/github-runner/actions/workflows/general.yml/badge.svg)](https://github.com/rolehippie/github-runner/actions/workflows/general.yml)
+# [![Readme Workflow](https://github.com/rolehippie/github-runner/actions/workflows/docs.yml/badge.svg)](https://github.com/rolehippie/github-runner/actions/workflows/docs.yml)
+# [![Galaxy Workflow](https://github.com/rolehippie/github-runner/actions/workflows/galaxy.yml/badge.svg)](https://github.com/rolehippie/github-runner/actions/workflows/galaxy.yml)
+# [![License: Apache-2.0](https://img.shields.io/github/license/rolehippie/github-runner)](https://github.com/rolehippie/github-runner/blob/master/LICENSE)
+# [![Ansible Role](https://img.shields.io/badge/role-rolehippie.github__runner-blue)](https://galaxy.ansible.com/rolehippie/github-runner)
+#
+# Ansible role to install and configure a GitHub self-hosted runner.
+#
+# ## Sponsor
+#
+# Building and improving this Ansible role have been sponsored by my current and previous employers like **[Cloudpunks GmbH](https://cloudpunks.de)** and **[Proact Deutschland GmbH](https://www.proact.eu)**.
+# @end
+# @meta dependencies:value: >
+# None
+# @end
+galaxy_info:
+  role_name: github_runner
+  namespace: rolehippie
+  author: Thomas Boerger
+  description: AAnsible role to install and configure a GitHub self-hosted runner
+  license: Apache-2.0
+  min_ansible_version: "2.10"
+  platforms:
+    - name: Ubuntu
+      versions:
+        - focal
+        - jammy
+  galaxy_tags:
+    - runner
+    - actions
+    - github
+
+dependencies: []
+
+...

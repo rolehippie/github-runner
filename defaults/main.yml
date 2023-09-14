@@ -1,0 +1,73 @@
+# Standards: 1.2
+---
+# @var github_runner_user:description: User used for the runner processes
+github_runner_user: runner
+
+# @var github_runner_group:description: Group user for the runner processes
+github_runner_group: runner
+
+# @var github_runner_dir:description: Home and working path
+github_runner_dir: /home/runner
+
+# @var github_runner_groups:description: Additional groups for the runner
+github_runner_groups:
+  - sudo
+  - docker
+
+# @var github_runner_version:description: Version fo the runner
+# renovate: datasource=github-releases depName=actions/runner
+github_runner_version: 2.309.0
+
+# @var github_runner_system:description: Operating system for the runner
+github_runner_system: "{{ 'osx' if ansible_system == 'Darwin' else 'linux' }}"
+
+# @var github_runner_arch:description: Architecture of the system
+github_runner_arch: "{{ 'arm64' if ansible_architecture == 'aarch64' else 'x64' }}"
+
+# @var github_runner_download:description: URL to download the runner from
+github_runner_download: "https://github.com/actions/runner/releases/download/v{{ github_runner_version }}/actions-runner-{{ github_runner_system }}-{{ github_runner_arch }}-{{ github_runner_version }}.tar.gz"
+
+# @var github_runner_state:description: State of the runner service
+github_runner_state: started
+
+# @var github_runner_reinstall:description: Always reinstall the service
+github_runner_reinstall: False
+
+# @var github_runner_token:description: Personal access token for runner registration token retrieval
+github_runner_token:
+
+# @var github_runner_repo:description: Repo to register the runner
+github_runner_repo:
+
+# @var github_runner_org:description: Organization to register the runner
+github_runner_org:
+
+# @var github_runner_enterprise:description: Enterprise to register the runner
+github_runner_enterprise:
+
+# @var github_runner_envvars:description: Additional env variables injected into .env
+github_runner_envvars:
+
+# @var github_runner_name:description: Name of the runner
+github_runner_name: "{{ ansible_hostname }}"
+
+# @var github_runner_labels:description: Labels for the runner
+github_runner_labels:
+  - self-hosted
+
+# @var runner_runner_grouping:description: Optional group name for the runner
+runner_runner_grouping:
+
+# @var github_runner_args:description: Optional arguments for the runner
+github_runner_args:
+
+# @var github_runner_url:description: General URL to access GitHub
+github_runner_url: https://github.com
+
+# @var github_runner_api:description: API URL to access GitHub
+github_runner_api: https://api.github.com
+
+# @var github_runner_hide_sensitive_logs:description: Hide potentially sensitive logs
+github_runner_hide_sensitive_logs: False
+
+...

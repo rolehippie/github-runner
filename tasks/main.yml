@@ -1,0 +1,286 @@
+# Standards: 1.2
+---
+- name: Collect required infos
+  check_mode: False
+  tags:
+    - github-runner
+  block:
+    - name: Fact repo API
+      when:
+        - github_runner_repo | default(False)
+      ansible.builtin.set_fact:
+        github_full_api_url: "{{ github_runner_api }}/repos/{{ github_runner_repo }}/actions/runners"
+      tags:
+        - github-runner
+
+    - name: Fact org API
+      when:
+        - github_runner_org | default(False)
+      ansible.builtin.set_fact:
+        github_full_api_url: "{{ github_runner_api }}/orgs/{{ github_runner_org }}/actions/runners"
+      tags:
+        - github-runner
+
+    - name: Fact enterprise API
+      when:
+        - github_runner_enterprise | default(False)
+      ansible.builtin.set_fact:
+        github_full_api_url: "{{ github_runner_api }}/enterprises/{{ github_runner_enterprise }}/actions/runners"
+      tags:
+        - github-runner
+
+    - name: Fetch registration token
+      register: github_runner_registration
+      run_once: True
+      ansible.builtin.uri:
+        url: "{{ github_full_api_url }}/registration-token"
+        headers:
+          Authorization: "token {{ github_runner_token }}"
+          Accept: "application/vnd.github.v3+json"
+        method: POST
+        status_code: 201
+        force_basic_auth: True
+      tags:
+        - github-runner
+
+    - name: Check registered runners
+      register: github_runner_registered
+      run_once: True
+      ansible.builtin.uri:
+        url: "{{ github_full_api_url }}"
+        headers:
+          Authorization: "token {{ github_runner_token }}"
+          Accept: "application/vnd.github.v3+json"
+        method: GET
+        status_code: 200
+        force_basic_auth: True
+      tags:
+        - github-runner
+
+    - name: Fetch service facts
+      ansible.builtin.service_facts:
+      when: ansible_system == "Linux"
+      tags:
+        - github-runner
+
+- name: Create defined group
+  register: github_runner_group_result
+  group:
+    name: "{{ github_runner_group }}"
+    system: True
+    state: present
+  tags:
+    - github-runner
+
+- name: Create defined user
+  register: github_runner_user_result
+  user:
+    name: "{{ github_runner_user }}"
+    group: "{{ github_runner_group }}"
+    comment: GitHub Runner
+    password: "!"
+    shell: /bin/bash
+    home: "{{ github_runner_dir }}"
+    groups: "{{ github_runner_groups }}"
+    createhome: True
+    system: True
+    state: present
+  tags:
+    - github-runner
+
+- name: Create runner directory
+  ansible.builtin.file:
+    path: "{{ github_runner_dir }}"
+    state: directory
+    mode: u=rwx,g=rw,o=rw
+    owner: "{{ github_runner_user_result.uid }}"
+    group: "{{ github_runner_group_result.gid }}"
+  tags:
+    - github-runner
+
+- name: Check installed version
+  register: github_runner_installed
+  check_mode: False
+  changed_when: False
+  ansible.builtin.shell:
+    cmd: "grep -i {{ github_runner_version }} {{ github_runner_dir }}/bin/Runner.Listener.deps.json || true"
+  tags:
+    - github-runner
+
+- name: Unarchive runner package
+  when:
+    - github_runner_version not in github_runner_installed.stdout
+  ansible.builtin.unarchive:
+    src: "{{ github_runner_download }}"
+    dest: "{{ github_runner_dir }}"
+    owner: "{{ github_runner_user_result.uid }}"
+    group: "{{ github_runner_group_result.gid }}"
+    remote_src: True
+    mode: u=rwx,g=rx,o=rx
+  tags:
+    - github-runner
+
+- name: Configure custom env
+  when:
+    - github_runner_envvars | default(False)
+  ansible.builtin.blockinfile:
+    path: "{{ github_runner_dir }}/.env"
+    block: "{{ github_runner_envvars }}"
+    owner: "{{ github_runner_user_result.uid }}"
+    create: True
+    mode: u=rwx,g=rx,o=rx
+    marker_begin: "# BEGIN ANSIBLE MANAGED BLOCK"
+    marker_end: "# END ANSIBLE MANAGED BLOCK"
+  tags:
+    - github-runner
+
+- name: Fact repo URL
+  when:
+    - github_runner_repo | default(False)
+  ansible.builtin.set_fact:
+    github_full_url: "{{ github_runner_url }}/{{ github_runner_repo }}"
+  tags:
+    - github-runner
+
+- name: Fact org URL
+  when:
+    - github_runner_org | default(False)
+  ansible.builtin.set_fact:
+    github_full_url: "{{ github_runner_url }}/{{ github_runner_org }}"
+  tags:
+    - github-runner
+
+- name: Fact enterprise URL
+  when:
+    - github_runner_enterprise | default(False)
+  ansible.builtin.set_fact:
+    github_full_url: "{{ github_runner_url }}/enterprises/{{ github_runner_enterprise }}"
+  tags:
+    - github-runner
+
+- name: Register defined runner
+  no_log: "{{ github_runner_hide_sensitive_logs | bool }}"
+  changed_when: True
+  become_user: "{{ github_runner_user }}"
+  when:
+    - github_runner_name not in github_runner_registered.json.runners | map(attribute='name') | list
+  environment:
+    RUNNER_ALLOW_RUNASROOT: "1"
+  ansible.builtin.command:
+    cmd: |
+      ./config.sh
+        --url {{ github_full_url }}
+        --token {{ github_runner_registration.json.token }}
+        --name '{{ github_runner_name }}'
+        --labels {{ github_runner_labels | join(',') }}
+        {% if runner_runner_grouping | default(False) %}
+        --runnergroup {{ runner_runner_grouping }}
+        {% endif %}
+        --unattended
+        {{ github_runner_args }}
+    chdir: "{{ github_runner_dir }}"
+  tags:
+    - github-runner
+
+- name: Replace defined runner
+  no_log: "{{ github_runner_hide_sensitive_logs | bool }}"
+  changed_when: True
+  become_user: "{{ github_runner_user }}"
+  when:
+    - github_runner_name in github_runner_registered.json.runners | map(attribute='name') | list
+    - github_runner_reinstall
+  environment:
+    RUNNER_ALLOW_RUNASROOT: "1"
+  ansible.builtin.command:
+    cmd: |
+      ./config.sh
+        --url {{ github_full_url }}
+        --token {{ github_runner_registration.json.token }}
+        --name '{{ github_runner_name }}'
+        --labels {{ github_runner_labels | join(',') }}
+        {% if runner_runner_grouping | default(False) %}
+        --runnergroup {{ runner_runner_grouping }}
+        {% endif %}
+        --unattended
+        {{ github_runner_args }}
+        --replace
+    chdir: "{{ github_runner_dir }}"
+  tags:
+    - github-runner
+
+- name: Check service file
+  register: github_runner_service_file
+  ansible.builtin.stat:
+    path: "{{ github_runner_dir }}/.service"
+  tags:
+    - github-runner
+
+- name: Install runner service
+  changed_when: True
+  become: "{{ False if ansible_system == 'Darwin' else True }}"
+  when:
+    - not github_runner_service_file.stat.exists
+  ansible.builtin.command:
+    cmd: "./svc.sh install {{ github_runner_user }}"
+    chdir: "{{ github_runner_dir }}"
+  tags:
+    - github-runner
+
+- name: Read runner service
+  register: github_runner_service
+  ansible.builtin.slurp:
+    src: "{{ github_runner_dir }}/.service"
+  tags:
+    - github-runner
+
+- name: Fact runner service
+  ansible.builtin.set_fact:
+    github_runner_svcname: "{{ github_runner_service.content | b64decode | trim }}"
+  tags:
+    - github-runner
+
+- name: Start runner service
+  no_log: "{{ github_runner_hide_sensitive_logs | bool }}"
+  ignore_errors: "{{ ansible_check_mode }}"
+  changed_when: True
+  become: "{{ False if ansible_system == 'Darwin' else True }}"
+  when:
+    - github_runner_state == "started"
+    - github_runner_svcname in ansible_facts.services.keys()
+    - ansible_facts.services[github_runner_svcname]['state'] != 'running'
+  ansible.builtin.command:
+    cmd: "./svc.sh start"
+    chdir: "{{ github_runner_dir }}"
+  tags:
+    - github-runner
+
+- name: Stop runner service
+  no_log: "{{ github_runner_hide_sensitive_logs | bool }}"
+  ignore_errors: "{{ ansible_check_mode }}"
+  changed_when: True
+  become: "{{ False if ansible_system == 'Darwin' else True }}"
+  when:
+    - github_runner_state == "stopped"
+    - github_runner_svcname in ansible_facts.services.keys()
+    - ansible_facts.services[github_runner_svcname]['state'] == 'running'
+  ansible.builtin.command:
+    cmd: "./svc.sh stop"
+    chdir: "{{ github_runner_dir }}"
+  tags:
+    - github-runner
+
+- name: Restart runner service
+  no_log: "{{ github_runner_hide_sensitive_logs | bool }}"
+  ignore_errors: "{{ ansible_check_mode }}"
+  changed_when: True
+  become: "{{ False if ansible_system == 'Darwin' else True }}"
+  when:
+    - github_runner_state == "started"
+    - github_runner_version not in github_runner_installed.stdout
+  ansible.builtin.shell:
+    cmd: "./svc.sh stop && sleep 5 && ./svc.sh start"
+    chdir: "{{ github_runner_dir }}"
+  tags:
+    - github-runner
+
+...
