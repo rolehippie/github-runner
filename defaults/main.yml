@@ -33,6 +33,9 @@ github_runner_state: started
 # @var github_runner_reinstall:description: Always reinstall the service
 github_runner_reinstall: False
 
+# @var github_runner_as_root:description: Install service as root
+github_runner_as_root: False
+
 # @var github_runner_token:description: Personal access token for runner registration token retrieval
 github_runner_token:
 

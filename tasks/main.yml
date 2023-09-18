@@ -221,7 +221,7 @@
   when:
     - not github_runner_service_file.stat.exists
   ansible.builtin.command:
-    cmd: "./svc.sh install {{ github_runner_user }}"
+    cmd: "./svc.sh install {{ 'root' if github_runner_as_root else github_runner_user }}"
     chdir: "{{ github_runner_dir }}"
   tags:
     - github-runner
