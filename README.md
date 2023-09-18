@@ -20,6 +20,7 @@ Building and improving this Ansible role have been sponsored by my current and p
   - [github_runner_api](#github_runner_api)
   - [github_runner_arch](#github_runner_arch)
   - [github_runner_args](#github_runner_args)
+  - [github_runner_as_root](#github_runner_as_root)
   - [github_runner_dir](#github_runner_dir)
   - [github_runner_download](#github_runner_download)
   - [github_runner_enterprise](#github_runner_enterprise)
@@ -80,6 +81,16 @@ Optional arguments for the runner
 
 ```YAML
 github_runner_args:
+```
+
+### github_runner_as_root
+
+Install service as root
+
+#### Default value
+
+```YAML
+github_runner_as_root: false
 ```
 
 ### github_runner_dir
