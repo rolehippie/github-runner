@@ -1,4 +1,3 @@
-# Standards: 1.2
 ---
 # @var github_runner_user:description: User used for the runner processes
 github_runner_user: runner
