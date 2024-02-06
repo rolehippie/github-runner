@@ -64,7 +64,7 @@
 
 - name: Create defined group
   register: github_runner_group_result
-  group:
+  ansible.builtin.group:
     name: "{{ github_runner_group }}"
     system: True
     state: present
@@ -73,12 +73,12 @@
 
 - name: Create defined user
   register: github_runner_user_result
-  user:
+  ansible.builtin.user:
     name: "{{ github_runner_user }}"
     group: "{{ github_runner_group }}"
     comment: GitHub Runner
     password: "!"
-    shell: /bin/bash
+    ansible.builtin.shell: /bin/bash
     home: "{{ github_runner_dir }}"
     groups: "{{ github_runner_groups }}"
     createhome: True
