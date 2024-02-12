@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.0](https://github.com/rolehippie/github-runner/compare/v1.3.0...v2.0.0) (2024-02-12)
+
+
+### Features
+
+* used full qualified collection names ([51a5902](https://github.com/rolehippie/github-runner/commit/51a59021cd4199181c412afe5daaf8fb5a8abcc1))
+
 ## [1.3.0](https://github.com/rolehippie/github-runner/compare/v1.2.0...v1.3.0) (2024-01-22)
 
 
