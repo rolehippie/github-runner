@@ -275,7 +275,7 @@ Version fo the runner
 #### Default value
 
 ```YAML
-github_runner_version: 2.313.0
+github_runner_version: 2.314.1
 ```
 
 ### runner_runner_grouping
