@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.4.0](https://github.com/rolehippie/github-runner/compare/v2.3.0...v2.4.0) (2024-05-06)
+
+
+### Features
+
+* **deps:** update dependency actions/runner to v2.316.0 ([a01182f](https://github.com/rolehippie/github-runner/commit/a01182f91389f7af0c46762200a6a96be74262d2))
+
 ## [2.3.0](https://github.com/rolehippie/github-runner/compare/v2.2.0...v2.3.0) (2024-04-08)
 
 
