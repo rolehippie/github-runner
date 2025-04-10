@@ -78,7 +78,7 @@
     group: "{{ github_runner_group }}"
     comment: GitHub Runner
     password: "!"
-    ansible.builtin.shell: /bin/bash
+    shell: /bin/bash
     home: "{{ github_runner_dir }}"
     groups: "{{ github_runner_groups }}"
     createhome: True
