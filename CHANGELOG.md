@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.11.1](https://github.com/rolehippie/github-runner/compare/v2.11.0...v2.11.1) (2025-04-10)
+
+
+### Bugfixes
+
+* resolve copy and paste typo withing tasks ([eff10a8](https://github.com/rolehippie/github-runner/commit/eff10a88ead98d61a612b48b568fbf429bbae415))
+
 ## [2.11.0](https://github.com/rolehippie/github-runner/compare/v2.10.0...v2.11.0) (2025-03-31)
 
 
