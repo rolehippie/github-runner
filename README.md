@@ -1,4 +1,4 @@
-# github-runner
+# workspace
 
 [![Source Code](https://img.shields.io/badge/github-source%20code-blue?logo=github&logoColor=white)](https://github.com/rolehippie/github-runner)
 [![General Workflow](https://github.com/rolehippie/github-runner/actions/workflows/general.yml/badge.svg)](https://github.com/rolehippie/github-runner/actions/workflows/general.yml)
@@ -110,9 +110,9 @@ URL to download the runner from
 #### Default value
 
 ```YAML
-github_runner_download: https://github.com/actions/runner/releases/download/v{{ github_runner_version
-  }}/actions-runner-{{ github_runner_system }}-{{ github_runner_arch }}-{{ github_runner_version
-  }}.tar.gz
+github_runner_download: https://github.com/actions/runner/releases/download/v{{ 
+  github_runner_version }}/actions-runner-{{ github_runner_system }}-{{ 
+  github_runner_arch }}-{{ github_runner_version }}.tar.gz
 ```
 
 ### github_runner_enterprise
@@ -275,7 +275,7 @@ Version fo the runner
 #### Default value
 
 ```YAML
-github_runner_version: 2.325.0
+github_runner_version: 2.326.0
 ```
 
 ### runner_runner_grouping
@@ -291,7 +291,6 @@ runner_runner_grouping:
 ## Discovered Tags
 
 **_github-runner_**
-
 
 ## Dependencies
 
