@@ -30,10 +30,10 @@ github_runner_download: "https://github.com/actions/runner/releases/download/v{{
 github_runner_state: started
 
 # @var github_runner_reinstall:description: Always reinstall the service
-github_runner_reinstall: False
+github_runner_reinstall: false
 
 # @var github_runner_as_root:description: Install service as root
-github_runner_as_root: False
+github_runner_as_root: false
 
 # @var github_runner_token:description: Personal access token for runner registration token retrieval
 github_runner_token:
@@ -70,6 +70,6 @@ github_runner_url: https://github.com
 github_runner_api: https://api.github.com
 
 # @var github_runner_hide_sensitive_logs:description: Hide potentially sensitive logs
-github_runner_hide_sensitive_logs: False
+github_runner_hide_sensitive_logs: false
 
 ...

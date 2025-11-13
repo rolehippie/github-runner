@@ -1,4 +1,4 @@
-# workspace
+# github-runner
 
 [![Source Code](https://img.shields.io/badge/github-source%20code-blue?logo=github&logoColor=white)](https://github.com/rolehippie/github-runner)
 [![General Workflow](https://github.com/rolehippie/github-runner/actions/workflows/general.yml/badge.svg)](https://github.com/rolehippie/github-runner/actions/workflows/general.yml)
