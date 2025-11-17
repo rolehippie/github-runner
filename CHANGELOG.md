@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.18.0](https://github.com/rolehippie/github-runner/compare/v2.17.0...v2.18.0) (2025-11-17)
+
+
+### Features
+
+* apply new repo structure and update linting ([8251ec3](https://github.com/rolehippie/github-runner/commit/8251ec38105fbf8a585677a233c134095aa1dd58))
+
 ## [2.17.0](https://github.com/rolehippie/github-runner/compare/v2.16.0...v2.17.0) (2025-10-20)
 
 
