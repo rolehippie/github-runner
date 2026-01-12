@@ -1,5 +1,21 @@
 # Changelog
 
+## [2.20.0](https://github.com/rolehippie/github-runner/compare/v2.19.0...v2.20.0) (2026-01-12)
+
+### Dependencies
+
+* **minor:** update dependency actions/runner to v2.331.0 ([694b8ab](https://github.com/rolehippie/github-runner/commit/694b8ab5d9bfbfdfeb72d5abf44e0118022ed5c9))
+
+### Miscellaneous
+
+* **flake:** updated lockfile [skip ci] ([41b7343](https://github.com/rolehippie/github-runner/commit/41b73434acb46c100deacb77e15dd8a74492d218))
+* **flake:** updated lockfile [skip ci] ([5566b7f](https://github.com/rolehippie/github-runner/commit/5566b7f0f526d9ec56dd2098117a4c85013468c9))
+* **flake:** updated lockfile [skip ci] ([494d6af](https://github.com/rolehippie/github-runner/commit/494d6af30a506eff6ee3b2d03564e8e674295185))
+* **flake:** updated lockfile [skip ci] ([d548255](https://github.com/rolehippie/github-runner/commit/d548255d854139c289e3725d8ab969540464d0e9))
+* **flake:** updated lockfile [skip ci] ([2b76aca](https://github.com/rolehippie/github-runner/commit/2b76aca9742538aa1254c2761f099e27d6d913b2))
+* **flake:** updated lockfile [skip ci] ([8856f32](https://github.com/rolehippie/github-runner/commit/8856f3244211e3d3cb464f8b768472224d032149))
+* **flake:** updated lockfile [skip ci] ([eaab984](https://github.com/rolehippie/github-runner/commit/eaab984c40ed0266a3c21cc6ce865357c09a1b6e))
+
 ## [2.19.0](https://github.com/rolehippie/github-runner/compare/v2.18.0...v2.19.0) (2025-11-24)
 
 
