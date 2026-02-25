@@ -15,7 +15,7 @@ github_runner_groups:
 
 # @var github_runner_version:description: Version fo the runner
 # renovate: datasource=github-releases depName=actions/runner
-github_runner_version: 2.331.0
+github_runner_version: 2.332.0
 
 # @var github_runner_system:description: Operating system for the runner
 github_runner_system: "{{ 'osx' if ansible_system == 'Darwin' else 'linux' }}"
